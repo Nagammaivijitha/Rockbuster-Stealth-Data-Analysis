@@ -1,0 +1,37 @@
+# Query to find the top 10 countries for Rockbuster in terms of customer numbers.
+
+SELECT D.country,
+COUNT (customer_id) AS customer_count
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id
+INNER JOIN city C ON B.city_id = C. city_id
+INNER JOIN country D ON C.country_id = D.country_id
+GROUP BY country
+ORDER BY customer_count DESC
+LIMIT 10;
+
+# Query to identify the top 10 cities that fall within the top 10 countries identified in step 1
+
+SELECT D.country,C.city,
+COUNT (customer_id) AS customer count
+FROM customer A
+INNER JOIN address B ON A.address_fd B.address_id
+INNER JOIN city C ON B.city_id= C. city_id
+INNER JOIN country D ON C.country_id = D.country_id
+GROUP BY D.country,C.city
+HAVING country IN ('India', 'China', 'United States', 'Japan', 'Mexico', 'Brazil', 'Russian Federatiion", 'Phillippines', 'Turkey', 'Indonesia')
+ORDER BY customer_count DESC
+LIMIT 10;
+
+# Query to find the top 5 customers from the top 10 cities who’ve paid the highest total amounts to Rockbuster. The customer team would like to reward them for their loyalty!
+
+SELECT D.country, C.city, A.first_name, A.last_name,A.customer_id, SUM (E.amount) AS total_amount_paid
+FROM customer A
+INNER JOIN address B ON A.address_id= B.address_id
+INNER JOIN city C ON B.city_id = C. city_id
+INNER JOIN country D ON C.country_id = D.country_id
+INNER JOIN payment E ON A.customer_id = E.customer_id
+WHERE city in ('Aurora', 'Acua', 'Citrus Heights', 'Iwaki', 'Ambattur', 'Shanwei', 'So Leopoldo', 'Tianjin', 'Hami', 'Clanjur')
+GROUP BY D.country, C.city, A.first_name,A.last_name,A.customer_id
+ORDER BY total amount_paid DESC
+LIMIT 5;
