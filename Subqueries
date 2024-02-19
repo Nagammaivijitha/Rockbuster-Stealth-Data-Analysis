@@ -1,0 +1,41 @@
+# Average amount paid by the top 5 customers.
+
+SELECT AVG(total_amount_paid.total_amount_paid) AS average_amount_paid
+FROM (SELECT D.country, C.city, A.first_name, A.last_name, A.customer_id,
+SUM (E.amount) AS total_amount_paid
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id
+INNER JOIN city C ON B.city_id = C. city_id
+INNER JOIN country D ON C.country_id = D.country_id
+INNER JOIN payment E ON A.customer_id = E.customer_id
+WHERE city in ('Aurora', 'Acua', 'Citrus Heights', 'Iwaki', 'Ambattur', 'Shanwei", 'So Leopoido', 'Tianjin', 'Hami', 'Clanjur')
+GROUP BY D.country, C.city,A.first_name, A.last_name, A.customer_id
+ORDER BY total amount_paid DESC
+LIMIT 5) AS total amount_paid
+
+# How many of the top 5 customers are identified in step 1 are based within each country.
+
+SELECT D. country, count(DISTINCT A.customer_id) AS all customer count, count DISTINCT top_5_customers.customer_id) AS top_customer_count
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id
+INNER JOIN city CON B.city_id = C. city_id
+INNER JOIN country D ON C.country_fd D.country_id
+LEFT JOIN
+SELECT Dicountry, C.city, A.first name, A.last_name, A.customer id,
+SUM (E.amount) AS total_amount_paid
+FROM customer A
+INNER JOIN address B ON A.address_id = B.address_id
+INNER JOIN city CON B.city_id = C. city_id
+INNER JOIN country D ON C.country_id=D.country_id
+INNER JOIN payment E ON A.customer id E.customer_id
+WHERE city in ('Aurora', 'Acua', 'Citrus Heights', 'Iwaki', 'Anbattur', 'Shanwel", 'So Leopoldo', 'Tianjin', 'Hami', 'Clanjur')
+GROUP BY D.country,C.city, A.first_name,A.last_nane,A.customer_id
+ORDER BY total amount paid DESC
+LIMIT 5) AS top 5 customers
+ON A.customer_id=top_5_customers.customer_id
+GROUP BY D.country
+ORDER BY all customer_count DESC
+LIMIT
+5;
+
+
